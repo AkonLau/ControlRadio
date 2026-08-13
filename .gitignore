@@ -1,0 +1,6 @@
+# Trained experiments are distributed through Hugging Face, not GitHub.
+experiments/
+
+# Python cache files.
+__pycache__/
+*.py[cod]

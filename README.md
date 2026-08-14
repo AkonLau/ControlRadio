@@ -10,13 +10,13 @@
 [![Paper](https://img.shields.io/badge/Paper-HTML-blue.svg)](https://arxiv.org/html/2608.09357v1)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[Paper](https://arxiv.org/abs/2608.09357) | [HTML](https://arxiv.org/html/2608.09357v1) | [PDF](https://arxiv.org/pdf/2608.09357) | [RadioMapSeer](https://radiomapseer.github.io/) | Pretrained Models (coming soon)
+[Paper](https://arxiv.org/abs/2608.09357) | [HTML](https://arxiv.org/html/2608.09357v1) | [PDF](https://arxiv.org/pdf/2608.09357) | [RadioMapSeer](https://radiomapseer.github.io/) | [Pretrained Models](https://huggingface.co/akon1995/ControlRadio)
 
 </div>
 
 ControlRadio is a prompt-driven controllable diffusion framework for cross-modal radio map generation. It combines natural-language descriptions with environmental layouts, such as building morphology and transmitter locations, to synthesize structurally consistent and propagation-plausible radio maps. The framework builds on Stable Diffusion and introduces a Layout-Aware ControlNet, a tunable Noise Controller, and a decoupled two-stage fine-tuning strategy.
 
-> This repository contains the research code used for the experiments in the paper. Due to their size, trained checkpoints are not hosted on GitHub. The two pretrained models described below will be released separately on Hugging Face.
+> This repository contains the research code used for the experiments in the paper. Due to their size, trained checkpoints are not hosted on GitHub. The two pretrained models described below are available from [Hugging Face](https://huggingface.co/akon1995/ControlRadio).
 
 ## Overview
 
@@ -115,16 +115,16 @@ The repository's `.gitignore` excludes the complete `experiments/` directory to 
 
 | Model | Setting | `--carsInput` | Checkpoint |
 |---|---|---|---|
-| ControlRadio-SRM | Static radio maps without cars | `no` | `epoch=99-step=337499.ckpt` |
-| ControlRadio-DRM | Dynamic radio maps with cars | `yes` | `epoch=99-step=506249.ckpt` |
+| [ControlRadio-SRM](https://huggingface.co/akon1995/ControlRadio/tree/main/experiments/prompt_v6/RadioMapSeer_RadioDiff-Seer-no-carsInput) | Static radio maps without cars | `no` | `epoch=99-step=337499.ckpt` |
+| [ControlRadio-DRM](https://huggingface.co/akon1995/ControlRadio/tree/main/experiments/prompt_v6/RadioMapSeer_RadioDiff-Seer-carsInput) | Dynamic radio maps with cars | `yes` | `epoch=99-step=506249.ckpt` |
 
-The Hugging Face repository will be published at:
+The pretrained checkpoints are hosted at:
 
 ```text
-https://huggingface.co/YOUR_HF_USERNAME/ControlRadio
+https://huggingface.co/akon1995/ControlRadio
 ```
 
-Replace `YOUR_HF_USERNAME` with the final Hugging Face account name after the upload. Download the complete `experiments/` directory from that repository and place it in the ControlRadio project root:
+Download the complete `experiments/` directory from that repository and place it in the ControlRadio project root:
 
 ```text
 ControlRadio/
@@ -133,18 +133,18 @@ ControlRadio/
         |-- RadioMapSeer_RadioDiff-Seer-no-carsInput/
         |   `-- control_sd21_3ch_1e-05_3_100_sd_tune_seed1230/
         |       `-- lightning_logs/version_0/checkpoints/
-        |           `-- epoch=*.ckpt
+        |           `-- epoch=99-step=337499.ckpt
         `-- RadioMapSeer_RadioDiff-Seer-carsInput/
             `-- control_sd21_3ch_1e-05_3_100_sd_tune_seed1230/
                 `-- lightning_logs/version_0/checkpoints/
-                    `-- epoch=99-*.ckpt
+                    `-- epoch=99-step=506249.ckpt
 ```
 
-For example, if the Hugging Face repository preserves the directory structure above, it can be downloaded directly into the project root with the Hugging Face CLI:
+The Hugging Face repository preserves the directory structure above. Download both checkpoints directly into the project root with the Hugging Face CLI:
 
 ```bash
 pip install -U huggingface_hub
-hf download YOUR_HF_USERNAME/ControlRadio --local-dir .
+hf download akon1995/ControlRadio --include "experiments/**" --local-dir .
 ```
 
 Do not rename or flatten the checkpoint directories. `controlRadio_test.py` and `controlRadio_inference.py` construct the experiment path from the command-line configuration and automatically load a `.ckpt` file from `lightning_logs/version_0/checkpoints/`. The arguments `--prompt_type`, `--simulation`, `--batch_size`, `--learning_rate`, `--max_epochs`, `--sd_locked`, `--seed`, and `--carsInput` must therefore match the downloaded model.
